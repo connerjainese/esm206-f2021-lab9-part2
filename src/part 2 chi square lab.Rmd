@@ -37,10 +37,37 @@ utst <- lizards %>%
   filter(spp == "UTST") %>% 
   filter(site %in% c("IBPE", "RABB", "EAST")) %>% 
   filter(tail %in% c("B", "W"))
+
+```
+
+## Find counts and proportions of lizards with broken or whole tails at each site
+
+```{r}
+utst %>% 
+  count(site, tail)
+
+```
+
+Return counts in contingency table format for chi squared test
+
+```{r}
+tail_counts <- utst %>% 
+  janitor::tabyl(site, tail)
+
+tail_proportions <- tail_counts %>% 
+  janitor::adorn_percentages() %>% 
+  janitor::adorn_pct_formatting(digits = 2) %>% 
+  janitor::adorn_ns()
+
+
+
 ```
 
 
 
+```{r}
+
+```
 
 
 
