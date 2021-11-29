@@ -59,15 +59,37 @@ tail_proportions <- tail_counts %>%
   janitor::adorn_pct_formatting(digits = 2) %>% 
   janitor::adorn_ns()
 
-
-
 ```
 
+Is there a significant association between site and tail breakage?
 
+# Convert to a contingency table 
+
+Use `column_to_rowname()`
 
 ```{r}
-
+lizard_ct <- tail_counts %>% 
+  column_to_rownames(var = "site")
 ```
+
+## Chi-square
+Are tail breakage and site independent?
+Do we have enough evidence to reject the null hypothesis of independence?
+Is there a significant effect of site on tail breakage?
+- basically all the same question
+
+```{r}
+lizard_x2 <- chisq.test(lizard_ct)
+
+lizard_x2
+
+lizard_tidy <- broom::tidy(lizard_x2)
+```
+- Using a significance level of p = 0.05, we can reject the null hypothesis that site and tail breakage are independent.
+- There is a significant association between site and tail breakage. 
+- Site and lizard tail breakage are not independent
+
+There is a significant association (i.e. non-independence) between site and lizard tail breakage ($\chi$^2^(`r lizard_tidy$parameter`) = `r lizard_tidy$statistic`, *p* = `r lizard_tidy$p.value`).
 
 
 
